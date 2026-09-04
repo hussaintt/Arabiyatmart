@@ -1,0 +1,19 @@
+# Independent application repositories. Commit and push inside each folder.
+/YallaMotorsProduction/YallaMotorsApp/
+/YallaMotorsProduction/YallaMotorsAdmin/
+/YallaMotorsProduction/YallaMotorsBackend/
+
+# Local archives, Git history backups, and downloaded reference data.
+/YallaMotorsProduction/.git-history-backups/
+/YallaMotorsProduction/car-logos-dataset/
+*.zip
+
+# Machine-local settings and generated files.
+.DS_Store
+.claude/
+.commandcode/
+node_modules/
+.env
+.env.*
+!.env.example
+*.log
