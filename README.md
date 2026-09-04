@@ -33,7 +33,7 @@ data, and machine settings are also excluded from the parent repository.
 | --- | --- |
 | Parent | git@github.com:hussaintt/Arabiyatmart.git |
 | Flutter app | https://github.com/hussaintt/ArabiyatMart-Flutter.git |
-| Admin | Not configured yet |
+| Admin | git@github.com:hussaintt/arabiyatmart-admin.git |
 | Backend | https://github.com/hussaintt/ArabiyatMart-Backend.git |
 
 All four repositories currently use the `main` branch.
@@ -51,7 +51,7 @@ git -C YallaMotorsProduction/YallaMotorsApp add -A
 git -C YallaMotorsProduction/YallaMotorsApp commit -m "Describe the app changes"
 git -C YallaMotorsProduction/YallaMotorsApp push -u origin main
 
-# Admin (configure its origin first)
+# Admin
 git -C YallaMotorsProduction/YallaMotorsAdmin status
 git -C YallaMotorsProduction/YallaMotorsAdmin diff
 git -C YallaMotorsProduction/YallaMotorsAdmin add -A
@@ -73,30 +73,20 @@ git commit -m "Describe the workspace changes"
 git push -u origin main
 ```
 
-## Connect the admin to a remote repository
-
-The parent origin is already configured as
-`git@github.com:hussaintt/Arabiyatmart.git`. Create an empty remote repository for
-the admin, then replace the placeholder URL:
-
-```bash
-git -C YallaMotorsProduction/YallaMotorsAdmin remote add origin 'YOUR_ADMIN_REPOSITORY_URL'
-git -C YallaMotorsProduction/YallaMotorsAdmin push -u origin main
-```
-
 Only committed changes are pushed. Application changes that existed before this
 workspace was configured remain in their original repositories for review and
 separate commits.
 
 ## Clone the workspace on another machine
 
-After all four remote repositories are configured and their changes are pushed:
+All four repositories have their own origin remote. To clone their committed and
+pushed files:
 
 ```bash
 git clone git@github.com:hussaintt/Arabiyatmart.git CarsMarketPlaceProduction
 cd CarsMarketPlaceProduction
 mkdir -p YallaMotorsProduction
 git clone https://github.com/hussaintt/ArabiyatMart-Flutter.git YallaMotorsProduction/YallaMotorsApp
-git clone 'YOUR_ADMIN_REPOSITORY_URL' YallaMotorsProduction/YallaMotorsAdmin
+git clone git@github.com:hussaintt/arabiyatmart-admin.git YallaMotorsProduction/YallaMotorsAdmin
 git clone https://github.com/hussaintt/ArabiyatMart-Backend.git YallaMotorsProduction/YallaMotorsBackend
 ```
