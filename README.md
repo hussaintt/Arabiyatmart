@@ -31,7 +31,7 @@ data, and machine settings are also excluded from the parent repository.
 
 | Repository | Origin |
 | --- | --- |
-| Parent | Not configured yet |
+| Parent | git@github.com:hussaintt/Arabiyatmart.git |
 | Flutter app | https://github.com/hussaintt/ArabiyatMart-Flutter.git |
 | Admin | Not configured yet |
 | Backend | https://github.com/hussaintt/ArabiyatMart-Backend.git |
@@ -65,7 +65,7 @@ git -C YallaMotorsProduction/YallaMotorsBackend add -A
 git -C YallaMotorsProduction/YallaMotorsBackend commit -m "Describe the backend changes"
 git -C YallaMotorsProduction/YallaMotorsBackend push -u origin main
 
-# Parent: shared documentation and workspace files (configure its origin first)
+# Parent: shared documentation and workspace files
 git status
 git diff
 git add -A
@@ -73,14 +73,13 @@ git commit -m "Describe the workspace changes"
 git push -u origin main
 ```
 
-## Connect the parent and admin to remote repositories
+## Connect the admin to a remote repository
 
-Create an empty remote repository for each, then replace the placeholder URLs:
+The parent origin is already configured as
+`git@github.com:hussaintt/Arabiyatmart.git`. Create an empty remote repository for
+the admin, then replace the placeholder URL:
 
 ```bash
-git remote add origin 'YOUR_PARENT_REPOSITORY_URL'
-git push -u origin main
-
 git -C YallaMotorsProduction/YallaMotorsAdmin remote add origin 'YOUR_ADMIN_REPOSITORY_URL'
 git -C YallaMotorsProduction/YallaMotorsAdmin push -u origin main
 ```
@@ -94,7 +93,7 @@ separate commits.
 After all four remote repositories are configured and their changes are pushed:
 
 ```bash
-git clone 'YOUR_PARENT_REPOSITORY_URL' CarsMarketPlaceProduction
+git clone git@github.com:hussaintt/Arabiyatmart.git CarsMarketPlaceProduction
 cd CarsMarketPlaceProduction
 mkdir -p YallaMotorsProduction
 git clone https://github.com/hussaintt/ArabiyatMart-Flutter.git YallaMotorsProduction/YallaMotorsApp
