@@ -1,5 +1,6 @@
 import { NextRequest } from 'next/server';
 import { ImageResponse } from 'next/og';
+import sharp from 'sharp';
 import { getCairoOgFonts } from '@/lib/og/fonts';
 import { ListingOgCard } from '@/components/og/listing-og-card';
 import { DefaultOgCard } from '@/components/og/default-og-card';
@@ -31,7 +32,7 @@ async function fetchImageAsBase64(imageUrl: string): Promise<string | null> {
   try {
     const fullUrl = imageUrl.startsWith('/') ? `${serverEnv.SITE_ORIGIN}${imageUrl}` : imageUrl;
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 1500);
+    const timeout = setTimeout(() => controller.abort(), 2000);
 
     const response = await fetch(fullUrl, {
       signal: controller.signal,
@@ -40,10 +41,19 @@ async function fetchImageAsBase64(imageUrl: string): Promise<string | null> {
     clearTimeout(timeout);
 
     if (!response.ok) return null;
-    const buffer = await response.arrayBuffer();
-    const contentType = response.headers.get('content-type') || 'image/jpeg';
-    return `data:${contentType};base64,${Buffer.from(buffer).toString('base64')}`;
-  } catch {
+    const arrayBuf = await response.arrayBuffer();
+    const inputBuffer = Buffer.from(arrayBuf);
+
+    // Satori only supports JPEG and PNG (it crashes with TypeError on WebP/AVIF).
+    // Convert and compress all car photos to high-performance JPEG (800x520) via sharp:
+    const jpegBuffer = await sharp(inputBuffer)
+      .resize(800, 520, { fit: 'cover', withoutEnlargement: false })
+      .jpeg({ quality: 80 })
+      .toBuffer();
+
+    return `data:image/jpeg;base64,${jpegBuffer.toString('base64')}`;
+  } catch (err) {
+    console.warn('[OG Generator] Image processing failed or timed out, using fallback silhouette:', err);
     return null;
   }
 }

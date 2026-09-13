@@ -119,4 +119,54 @@ describe('Open Graph (OG) Image Generation Engine', () => {
     expect([...enBuffer.subarray(0, 2)]).toEqual([0xff, 0xd8]); // JPEG magic bytes
     expect(enBuffer.byteLength).toBeLessThan(300 * 1024); // WhatsApp budget
   });
+
+  it('successfully converts and renders listing with WebP photo without crashing Satori', async () => {
+    // Valid 10x10 WebP image bytes generated via sharp
+    const sampleWebpBase64 = 'UklGRjwAAABXRUJQVlA4IDAAAADQAQCdASoKAAoAAUAmJaACdLoB+AADsAD+8ut//NgVzXPv9//S4P0uD9Lg/9KQAAA=';
+    const sampleWebpBuffer = Buffer.from(sampleWebpBase64, 'base64');
+
+    const sampleListing = createListingDetail({
+      title: 'تويوتا كورولا 2024',
+      images: [
+        {
+          id: 'img-1',
+          url: 'https://example.com/car.webp',
+          mediumUrl: 'https://example.com/car-medium.webp',
+          thumbnailUrl: 'https://example.com/car-thumb.webp',
+          sortOrder: 0,
+        },
+      ],
+    });
+    mockGetListing.mockResolvedValue({ data: sampleListing });
+
+    // Mock fetch to return webp bytes
+    const originalFetch = global.fetch;
+    const webpArrayBuffer = sampleWebpBuffer.buffer.slice(
+      sampleWebpBuffer.byteOffset,
+      sampleWebpBuffer.byteOffset + sampleWebpBuffer.byteLength
+    );
+    global.fetch = vi.fn().mockResolvedValue({
+      ok: true,
+      headers: new Headers({ 'content-type': 'image/webp' }),
+      arrayBuffer: async () => webpArrayBuffer,
+    }) as unknown as typeof fetch;
+
+    try {
+      const request = new NextRequest('http://localhost:3000/api/og/listing/' + sampleListing.slug + '?locale=ar');
+      const response = await getListingOg(request, {
+        params: Promise.resolve({ slug: sampleListing.slug }),
+      });
+
+      expect(response.status).toBe(200);
+      expect(response.headers.get('content-type')).toContain('image/png');
+
+      const buffer = Buffer.from(await response.arrayBuffer());
+      expect(buffer.subarray(1, 4).toString('ascii')).toBe('PNG');
+      expect(buffer.readUInt32BE(16)).toBe(1200);
+      expect(buffer.readUInt32BE(20)).toBe(630);
+      expect(buffer.byteLength).toBeLessThan(300 * 1024);
+    } finally {
+      global.fetch = originalFetch;
+    }
+  });
 });
