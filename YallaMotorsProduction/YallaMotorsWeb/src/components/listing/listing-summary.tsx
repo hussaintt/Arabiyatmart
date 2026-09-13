@@ -11,9 +11,10 @@ import {
   Tag,
   CreditCard,
   ArrowLeftRight,
+  Clock3,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { formatMoneyFromCents, formatDigits } from '@/i18n/format';
+import { formatDate, formatMoneyFromCents, formatDigits } from '@/i18n/format';
 import { cn } from '@/lib/utils';
 import type { AppLocale } from '@/i18n/config';
 import type { ListingDetail, ListingImage } from '@/types/listing';
@@ -127,6 +128,7 @@ export function ListingSummary({
   const formattedPrice = formatMoneyFromCents(listing.priceCents, listing.currency, locale);
   const formattedMileage = `${formatDigits(listing.mileageKm.toLocaleString(isArabic ? 'ar-EG' : 'en-US'), locale)} ${isArabic ? 'كم' : 'km'}`;
   const formattedYear = formatDigits(listing.year, locale);
+  const postedDate = listing.publishedAt ? formatDate(listing.publishedAt, locale) : null;
 
   const transmissionLabel = TRANSMISSION_LABELS[listing.transmission]?.[locale] ?? listing.transmission;
   const fuelLabel = FUEL_LABELS[listing.fuelType]?.[locale] ?? listing.fuelType;
@@ -195,9 +197,17 @@ export function ListingSummary({
         <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground leading-tight tracking-tight">
           {displayTitle}
         </h1>
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <MapPin className="h-4 w-4 shrink-0 text-primary" />
-          <span>{fullLocation}</span>
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted-foreground">
+          <span className="inline-flex items-center gap-2">
+            <MapPin className="h-4 w-4 shrink-0 text-primary" />
+            <span>{fullLocation}</span>
+          </span>
+          {postedDate ? (
+            <span className="inline-flex items-center gap-2 font-medium" data-testid="listing-posted-date">
+              <Clock3 className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
+              <span>{isArabic ? `تاريخ النشر: ${postedDate}` : `Posted: ${postedDate}`}</span>
+            </span>
+          ) : null}
         </div>
       </div>
 

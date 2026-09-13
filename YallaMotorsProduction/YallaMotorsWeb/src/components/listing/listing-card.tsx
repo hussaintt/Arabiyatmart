@@ -1,11 +1,11 @@
 import * as React from 'react';
 import Image from 'next/image';
-import { Calendar, Gauge, MapPin, ShieldCheck, Car } from 'lucide-react';
+import { Calendar, Clock3, Gauge, MapPin, ShieldCheck, Car } from 'lucide-react';
 import { Link } from '@/i18n/routing';
 import { Badge } from '@/components/ui/badge';
 import { FavoriteButton } from './favorite-button';
 import { ContactActions } from './contact-actions';
-import { formatMoneyFromCents, formatDigits } from '@/i18n/format';
+import { formatDate, formatMoneyFromCents, formatDigits } from '@/i18n/format';
 import { cn } from '@/lib/utils';
 import type { ListingCard as ListingCardType } from '@/types/listing';
 import type { AppLocale } from '@/i18n/config';
@@ -44,6 +44,7 @@ export function ListingCard({
   const formattedPrice = formatMoneyFromCents(listing.priceCents, listing.currency, locale);
   const formattedMileage = `${formatDigits(listing.mileageKm.toLocaleString(isArabic ? 'ar-EG' : 'en-US'), locale)} ${isArabic ? 'كم' : 'km'}`;
   const formattedYear = formatDigits(listing.year, locale);
+  const postedDate = listing.publishedAt ? formatDate(listing.publishedAt, locale) : null;
 
   const isDealer = listing.sellerType === 'DEALER';
   const sellerLabel = isDealer
@@ -162,6 +163,16 @@ export function ListingCard({
             <span className="truncate">{city}</span>
           </div>
         </div>
+
+        {postedDate ? (
+          <div
+            className="mt-2 flex items-center gap-1.5 text-xs font-medium text-muted-foreground"
+            data-testid="listing-posted-date"
+          >
+            <Clock3 className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+            <span>{isArabic ? `تاريخ النشر: ${postedDate}` : `Posted: ${postedDate}`}</span>
+          </div>
+        ) : null}
 
         {/* Optional Interactive Footer (Contact Actions) - z-20 to sit above stretched link */}
         {showContactActions && (contactPhone || contactWhatsapp) ? (

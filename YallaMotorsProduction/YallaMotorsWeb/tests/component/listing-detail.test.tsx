@@ -383,6 +383,7 @@ describe('TASK-031: Listing Detail, Gallery, Specifications, and Similar Invento
       expect(screen.getByText(/650,000/)).toBeInTheDocument();
       expect(screen.getByText(/(قابل للتفاوض)/i)).toBeInTheDocument();
       expect(screen.getByText(/إمكانية التقسيط متوفرة/i)).toBeInTheDocument();
+      expect(screen.getByTestId('listing-posted-date')).toHaveTextContent(/تاريخ النشر/);
     });
   });
 

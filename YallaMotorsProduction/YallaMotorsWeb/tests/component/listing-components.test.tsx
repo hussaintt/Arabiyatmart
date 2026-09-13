@@ -129,6 +129,7 @@ describe('ListingCard Component', () => {
     // Specs
     expect(screen.getByText(/2024/)).toBeInTheDocument();
     expect(screen.getByText(/القاهرة/)).toBeInTheDocument();
+    expect(screen.getByTestId('listing-posted-date')).toHaveTextContent(/تاريخ النشر/);
   });
 
   it('renders English locale correctly', () => {
@@ -149,6 +150,7 @@ describe('ListingCard Component', () => {
     expect(screen.getByText(/Toyota Corolla 2024/)).toBeInTheDocument();
     expect(screen.getByText('Private Seller')).toBeInTheDocument();
     expect(screen.getByText(/Cairo/)).toBeInTheDocument();
+    expect(screen.getByTestId('listing-posted-date')).toHaveTextContent(/Posted:/);
   });
 
   it('avoids nested interactive elements (no button inside link)', () => {

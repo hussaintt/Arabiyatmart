@@ -27,7 +27,7 @@ export async function GET(request: NextRequest) {
   try {
     const buffer = await getHomeOgBuffer(locale);
 
-    return new NextResponse(buffer, {
+    return new NextResponse(new Uint8Array(buffer), {
       status: 200,
       headers: {
         'Content-Type': 'image/jpeg',
@@ -38,7 +38,7 @@ export async function GET(request: NextRequest) {
   } catch {
     const fallbackPath = path.join(process.cwd(), 'public/images/og-default.jpg');
     const fallbackBuffer = await fs.readFile(fallbackPath);
-    return new NextResponse(fallbackBuffer, {
+    return new NextResponse(new Uint8Array(fallbackBuffer), {
       status: 200,
       headers: {
         'Content-Type': 'image/jpeg',

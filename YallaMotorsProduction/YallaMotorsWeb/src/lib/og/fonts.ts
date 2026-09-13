@@ -22,27 +22,31 @@ export async function getCairoOgFonts(): Promise<OgFontConfig[]> {
         fs.readFile(path.join(fontsDir, 'Cairo-Regular.ttf')),
       ]);
 
-      const toArrayBuffer = (buf: Buffer): ArrayBuffer =>
-        buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength);
+      const toArrayBuffer = (buf: Buffer): ArrayBuffer => {
+        const ab = new ArrayBuffer(buf.byteLength);
+        const view = new Uint8Array(ab);
+        view.set(buf);
+        return ab;
+      };
 
       return [
         {
           name: 'Cairo',
           data: toArrayBuffer(boldData),
-          weight: 700,
-          style: 'normal',
+          weight: 700 as const,
+          style: 'normal' as const,
         },
         {
           name: 'Cairo',
           data: toArrayBuffer(semiBoldData),
-          weight: 600,
-          style: 'normal',
+          weight: 600 as const,
+          style: 'normal' as const,
         },
         {
           name: 'Cairo',
           data: toArrayBuffer(regularData),
-          weight: 400,
-          style: 'normal',
+          weight: 400 as const,
+          style: 'normal' as const,
         },
       ];
     })().catch((error) => {

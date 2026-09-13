@@ -91,12 +91,14 @@ export async function GET(
     const priceFormatted = formatMoneyFromCents(listing.priceCents, listing.currency, validLocale);
     const mileageFormatted = `${listing.mileageKm.toLocaleString(isArabic ? 'ar-EG' : 'en-US')} ${isArabic ? 'كم' : 'km'}`;
 
-    const transmission = TRANSMISSION_MAP[listing.transmission]
-      ? (isArabic ? TRANSMISSION_MAP[listing.transmission].ar : TRANSMISSION_MAP[listing.transmission].en)
+    const transConfig = TRANSMISSION_MAP[listing.transmission];
+    const transmission = transConfig
+      ? (isArabic ? transConfig.ar : transConfig.en)
       : listing.transmission;
 
-    const fuelType = FUEL_MAP[listing.fuelType]
-      ? (isArabic ? FUEL_MAP[listing.fuelType].ar : FUEL_MAP[listing.fuelType].en)
+    const fuelConfig = FUEL_MAP[listing.fuelType];
+    const fuelType = fuelConfig
+      ? (isArabic ? fuelConfig.ar : fuelConfig.en)
       : listing.fuelType;
 
     const cityName = isArabic ? listing.city.name.ar : listing.city.name.en;
