@@ -20,11 +20,11 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     siteName: 'Arabiyatmart',
-    images: [{ url: '/images/og-default.jpg', width: 1200, height: 630, alt: 'Arabiyatmart' }],
+    images: [{ url: '/api/og/default?locale=ar', width: 1200, height: 630, alt: 'Arabiyatmart', type: 'image/png' }],
   },
   twitter: {
     card: 'summary_large_image',
-    images: ['/images/og-default.jpg'],
+    images: ['/api/og/default?locale=ar'],
   },
 };
 

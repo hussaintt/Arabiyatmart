@@ -11,6 +11,7 @@ vi.mock('@/server/queries/listings', () => ({
 import { getCairoOgFonts } from '@/lib/og/fonts';
 import { GET as getListingOg } from '@/app/api/og/listing/[slug]/route';
 import { GET as getDefaultOg } from '@/app/api/og/default/route';
+import { GET as getHomeOg } from '@/app/api/og/home/route';
 import { createListingDetail } from '../fixtures/factories';
 
 describe('Open Graph (OG) Image Generation Engine', () => {
@@ -91,5 +92,31 @@ describe('Open Graph (OG) Image Generation Engine', () => {
     expect(buffer.readUInt32BE(16)).toBe(1200);
     expect(buffer.readUInt32BE(20)).toBe(630);
     expect(buffer.byteLength).toBeLessThan(300 * 1024);
+  });
+
+  it('serves professional localized home OG images (Arabic and English) with 1200x630 dimensions under 300KB', async () => {
+    // 1. Arabic Home Banner
+    const arRequest = new NextRequest('http://localhost:3000/api/og/home?locale=ar');
+    const arResponse = await getHomeOg(arRequest);
+
+    expect(arResponse.status).toBe(200);
+    expect(arResponse.headers.get('content-type')).toBe('image/jpeg');
+    expect(arResponse.headers.get('cache-control')).toContain('public');
+
+    const arBuffer = Buffer.from(await arResponse.arrayBuffer());
+    expect([...arBuffer.subarray(0, 2)]).toEqual([0xff, 0xd8]); // JPEG magic bytes
+    expect(arBuffer.byteLength).toBeLessThan(300 * 1024); // WhatsApp budget
+
+    // 2. English Home Banner
+    const enRequest = new NextRequest('http://localhost:3000/api/og/home?locale=en');
+    const enResponse = await getHomeOg(enRequest);
+
+    expect(enResponse.status).toBe(200);
+    expect(enResponse.headers.get('content-type')).toBe('image/jpeg');
+    expect(enResponse.headers.get('cache-control')).toContain('public');
+
+    const enBuffer = Buffer.from(await enResponse.arrayBuffer());
+    expect([...enBuffer.subarray(0, 2)]).toEqual([0xff, 0xd8]); // JPEG magic bytes
+    expect(enBuffer.byteLength).toBeLessThan(300 * 1024); // WhatsApp budget
   });
 });

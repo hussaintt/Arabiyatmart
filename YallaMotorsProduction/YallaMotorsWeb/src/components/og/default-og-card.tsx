@@ -4,6 +4,7 @@ export interface DefaultOgCardProps {
   isArabic: boolean;
   title?: string;
   description?: string;
+  backgroundImageUrl?: string;
 }
 
 export function DefaultOgCard({
@@ -12,7 +13,7 @@ export function DefaultOgCard({
   description,
 }: DefaultOgCardProps) {
   const displayTitle = title ?? (isArabic ? 'عربيات مارت - سوق السيارات في مصر' : 'Arabiyatmart - Automotive Marketplace in Egypt');
-  const displayDescription = description ?? (isArabic ? 'أكبر سوق موثوق لبيع وشراء السيارات الجديدة والمستعملة في مصر' : 'Egypt\'s premier trusted automotive marketplace for new and used cars');
+  const displayDescription = description ?? (isArabic ? 'أكبر سوق موثوق لبيع وشراء السيارات الجديدة والمستعملة في مصر' : "Egypt's premier trusted automotive marketplace for new and used cars");
 
   return (
     <div
@@ -68,6 +69,7 @@ export function DefaultOgCard({
           </div>
           <div
             style={{
+              display: 'flex',
               fontSize: '28px',
               fontWeight: 700,
               color: '#FFFFFF',
@@ -107,6 +109,7 @@ export function DefaultOgCard({
       >
         <div
           style={{
+            display: 'flex',
             fontSize: '48px',
             fontWeight: 700,
             lineHeight: 1.2,
@@ -118,6 +121,7 @@ export function DefaultOgCard({
         </div>
         <div
           style={{
+            display: 'flex',
             fontSize: '24px',
             fontWeight: 400,
             lineHeight: 1.5,
@@ -150,6 +154,7 @@ export function DefaultOgCard({
         </div>
         <div
           style={{
+            display: 'flex',
             color: '#38BDF8',
             fontWeight: 700,
             fontSize: '18px',

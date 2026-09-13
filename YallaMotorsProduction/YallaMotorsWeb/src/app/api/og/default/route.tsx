@@ -15,6 +15,7 @@ export async function GET(request: NextRequest) {
 
   const title = searchParams.get('title') || undefined;
   const description = searchParams.get('description') || undefined;
+  const backgroundImageUrl = new URL('/images/home-og-background.png', request.url).toString();
 
   const fonts = await getCairoOgFonts();
 
@@ -22,8 +23,9 @@ export async function GET(request: NextRequest) {
     (
       <DefaultOgCard
         isArabic={isArabic}
-        title={title}
-        description={description}
+        backgroundImageUrl={backgroundImageUrl}
+        {...(title ? { title } : {})}
+        {...(description ? { description } : {})}
       />
     ),
     {

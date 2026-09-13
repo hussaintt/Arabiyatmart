@@ -14,6 +14,7 @@ import { SpotlightSection } from '@/components/home/spotlight-section';
 import { DealerStrip } from '@/components/home/dealer-strip';
 import { Reveal } from '@/components/ui/reveal';
 import { canonicalizePublicUrl } from '@/lib/metadata';
+import { serverEnv } from '@/lib/env/server';
 import type { HomePageData } from '@/types/home';
 import { Skeleton } from '@/components/ui/skeleton';
 import '@/components/home/home.css';
@@ -43,6 +44,7 @@ export async function generateMetadata({
     : 'Find new and used cars for sale in Egypt. Compare models and prices, connect with owners and dealers, or list your car on Arabiyatmart.';
 
   const canonicalUrl = `/${locale}`;
+  const ogImageUrl = `${serverEnv.SITE_ORIGIN}/api/og/home?locale=${locale}`;
 
   return {
     title,
@@ -59,10 +61,16 @@ export async function generateMetadata({
       title,
       description,
       url: canonicalUrl,
-      siteName: 'Arabiyatmart',
+      siteName: isArabic ? 'عربيات مارت' : 'Arabiyatmart',
       locale: isArabic ? 'ar_EG' : 'en_US',
       type: 'website',
-      images: [{ url: '/images/og-default.jpg', width: 1200, height: 630, alt: title }],
+      images: [{ url: ogImageUrl, width: 1200, height: 630, alt: title, type: 'image/jpeg' }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [ogImageUrl],
     },
   };
 }
