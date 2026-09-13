@@ -33,6 +33,8 @@ export async function GET(request: NextRequest) {
         'Content-Type': 'image/jpeg',
         'Cache-Control': 'public, max-age=86400, s-maxage=604800, stale-while-revalidate=86400',
         'Content-Length': buffer.length.toString(),
+        'Cross-Origin-Resource-Policy': 'cross-origin',
+        'Access-Control-Allow-Origin': '*',
       },
     });
   } catch {
@@ -43,6 +45,8 @@ export async function GET(request: NextRequest) {
       headers: {
         'Content-Type': 'image/jpeg',
         'Cache-Control': 'public, max-age=3600, s-maxage=3600',
+        'Cross-Origin-Resource-Policy': 'cross-origin',
+        'Access-Control-Allow-Origin': '*',
       },
     });
   }

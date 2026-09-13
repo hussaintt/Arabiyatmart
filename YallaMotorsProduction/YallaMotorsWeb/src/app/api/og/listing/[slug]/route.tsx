@@ -143,6 +143,8 @@ export async function GET(
         fonts,
         headers: {
           'Cache-Control': 'public, max-age=86400, s-maxage=604800, stale-while-revalidate=86400',
+          'Cross-Origin-Resource-Policy': 'cross-origin',
+          'Access-Control-Allow-Origin': '*',
         },
       }
     );
@@ -161,6 +163,8 @@ export async function GET(
         fonts,
         headers: {
           'Cache-Control': 'public, max-age=3600, s-maxage=3600',
+          'Cross-Origin-Resource-Policy': 'cross-origin',
+          'Access-Control-Allow-Origin': '*',
         },
       }
     );

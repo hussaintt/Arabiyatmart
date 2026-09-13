@@ -49,9 +49,12 @@ export async function generateMetadata({ params }: ListingPageProps): Promise<Me
     const title = `${listing.title} | ${isArabic ? 'عربيات مارت' : 'Arabiyatmart'}`;
     const formattedPrice = formatMoneyFromCents(listing.priceCents, listing.currency, validLocale);
     const description = `${make} ${model} ${listing.year} - ${formattedPrice} - ${isArabic ? listing.city.name.ar : listing.city.name.en}`;
+    const firstImage = listing.images.find((img) => img.isCover) ?? listing.images[0];
+    const rawImageUrl = firstImage?.largeUrl ?? firstImage?.mediumUrl ?? firstImage?.url;
     const canonical = `/${validLocale}/listing/${slug}`;
-    const versionParam = listing.publishedAt ? `&v=${encodeURIComponent(new Date(listing.publishedAt).getTime())}` : '';
-    const ogImageUrl = `${serverEnv.SITE_ORIGIN}/api/og/listing/${listing.slug}?locale=${validLocale}${versionParam}`;
+    const ogImageUrl = rawImageUrl
+      ? (rawImageUrl.startsWith('http') ? rawImageUrl : `${serverEnv.SITE_ORIGIN}${rawImageUrl}`)
+      : `${serverEnv.SITE_ORIGIN}/images/og-default.jpg`;
 
     return {
       title,
@@ -75,7 +78,6 @@ export async function generateMetadata({ params }: ListingPageProps): Promise<Me
             width: 1200,
             height: 630,
             alt: title,
-            type: 'image/png',
           },
         ],
         type: 'website',

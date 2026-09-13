@@ -44,7 +44,7 @@ export async function generateMetadata({
     : 'Find new and used cars for sale in Egypt. Compare models and prices, connect with owners and dealers, or list your car on Arabiyatmart.';
 
   const canonicalUrl = `/${locale}`;
-  const ogImageUrl = `${serverEnv.SITE_ORIGIN}/api/og/home?locale=${locale}`;
+  const ogImageUrl = `${serverEnv.SITE_ORIGIN}/images/og-home-${locale}.jpg`;
 
   return {
     title,
